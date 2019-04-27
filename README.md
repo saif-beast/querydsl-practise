@@ -1,6 +1,6 @@
 # POC Project
 
-#### Running the project
+### Running the project
 
 _Make sure you have docker and docker-compose already installed on the machine_
 
