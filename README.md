@@ -15,3 +15,5 @@ Your project start and phpmyadmin can be accessed `localhost:8181` having creden
 **username : root**
 
 **password : root**
+
+Use the command `bash rebuild.sh` to rebuild the project container and restart its service.
