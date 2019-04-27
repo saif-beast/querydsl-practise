@@ -1,23 +1,25 @@
 package com.influido.poc.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.influido.poc.domains.Product;
 import com.influido.poc.dto.ProductDTO;
 import com.influido.poc.repositories.ProductRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +37,7 @@ public class ProductController implements CrudController<ProductCO,Long>{
         return ResponseEntity.ok(body);
     }
 
-    private ProductDTO saveAndGetProductDTO(@RequestBody ProductCO productCO) {
+    private ProductDTO saveAndGetProductDTO(@RequestBody @Valid ProductCO productCO) {
         Product product = productRepository.save(
                 ProductCO.toDomain(productCO)
         );
@@ -44,18 +46,26 @@ public class ProductController implements CrudController<ProductCO,Long>{
     }
 
     @Override
-    public ResponseEntity update(ProductCO productCO) {
-        return ResponseEntity.ok(productCO);
+    public ResponseEntity update(@RequestBody @Valid ProductCO productCO) {
+        Product product = productRepository.findOne(productCO.getId());
+
+        BeanUtils.copyProperties(ProductCO.toDomain(productCO),product);
+
+        productRepository.save(product);
+
+        return ResponseEntity.ok(Product.toDTO(product));
     }
 
     @Override
     public ResponseEntity get(Long id) {
-        return null;
+        Product one = productRepository.findOne(id);
+        one.getName();
+        return ResponseEntity.ok(Product.toDTO(one));
     }
 
     @Override
     public void delete(Long id) {
-
+        productRepository.delete(id);
     }
 
     @PostMapping("/upload")
@@ -69,5 +79,14 @@ public class ProductController implements CrudController<ProductCO,Long>{
 
         List<ProductDTO> productDTOList = objectMappingIterator.readAll().stream().map(this::saveAndGetProductDTO).collect(Collectors.toList());
         return ResponseEntity.ok(productDTOList);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity handleValidationError(MethodArgumentNotValidException ex) {
+        Map map = new HashMap();
+        map.put("errorCode",400);
+        map.put("errorMessage",ex.getMessage());
+        return ResponseEntity.badRequest().body(map);
     }
 }

@@ -1,17 +1,28 @@
 package com.influido.poc.controller;
 
 import com.influido.poc.domains.Product;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 public class ProductCO {
 
     private Long id;
 
+    @Length(min = 4,max = 20)
+    @NotEmpty
     private String name;
 
     private Double price;
 
+    @Min(value = 0)
     private Long quantityLeft;
 
+    @Min(value = 1)
+    @Max(value = 5)
     private Float rating;
 
     private Boolean isDeleted;
