@@ -1,0 +1,39 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.19.RELEASE'
+	}
+}
+
+plugins {
+	id 'java'
+}
+
+apply plugin: 'org.springframework.boot'
+
+group = 'com.influido'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile('com.fasterxml.jackson.core:jackson-databind')
+	compile('com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.5.3')
+//	compile('com.fasterxml.jackson.core:jackson-core')
+	runtime 'mysql:mysql-connector-java'
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+configurations {
+//	compile.exclude module: "spring-boot-starter-tomcat"
+//	compile.exclude module: "spring-boot-starter-logging"
+//	compile.exclude module: "logback-classic"
+//	compile.exclude module: "tomcat-jdbc"
+}
