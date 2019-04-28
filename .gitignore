@@ -29,6 +29,6 @@ HELP.md
 ### VS Code ###
 .vscode/
 
-gradle
+#gradle
 
 
