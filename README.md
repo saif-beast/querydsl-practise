@@ -1,4 +1,4 @@
-# POC Project
+# QueryDSL Learning Project
 
 ### Running the project
 
@@ -17,3 +17,6 @@ Your project start and phpmyadmin can be accessed at `localhost:8181` having cre
 **password : root**
 
 Use the command `bash rebuild.sh` to rebuild the project container and restart its service.
+
+#### Generating Q-types for domains
+Run the command `gradle compileJava` in the root directory.

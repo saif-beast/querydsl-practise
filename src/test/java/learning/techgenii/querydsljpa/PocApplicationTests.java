@@ -1,4 +1,4 @@
-package com.influido.poc;
+package learning.techgenii.querydsljpa;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
