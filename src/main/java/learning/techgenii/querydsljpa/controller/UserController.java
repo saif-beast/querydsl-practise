@@ -83,17 +83,6 @@ public class UserController implements CrudController<UserCO,Long>{
                 .fetchAll()
                 .fetch();
 
-        int ALICE = 0;
-        int BOB   = 1;
-
-        List<Integer> resultScore = new ArrayList<>(2);
-        resultScore.set(0,0);
-        resultScore.set(1,0);
-
-        Integer integer = resultScore.get(ALICE);
-        integer++;
-        resultScore.set(ALICE,integer);
-
         return ResponseEntity.
                 ok(
                         Optional.ofNullable(dbFetchedUsers).orElse(new ArrayList<>())
@@ -101,6 +90,13 @@ public class UserController implements CrudController<UserCO,Long>{
                                 .map(this::getUserDTO)
                                 .collect(Collectors.toList())
                 );
+    }
+
+    @PostMapping("/groupBy")
+    public ResponseEntity groupBy(@RequestBody UserFilterCO userFilterCO) {
+        QUser user = QUser.user;
+        return null;
+
     }
 
     private UserDTO getUserDTO(User dbFetchedUser) {
